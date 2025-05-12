@@ -1,0 +1,33 @@
+import pandas as pd
+import plotly.express as px
+
+# Load the OWID COVID-19 dataset
+url = "https://covid.ourworldindata.org/data/owid-covid-data.csv"
+df = pd.read_csv(url)
+
+# Filter for specific countries and recent data
+countries = ['South Africa', 'United States', 'India', 'Brazil', 'United Kingdom']
+df_filtered = df[df['location'].isin(countries)]
+df_filtered['date'] = pd.to_datetime(df_filtered['date'])
+
+# Plot total cases over time
+fig_cases = px.line(
+    df_filtered,
+    x='date',
+    y='total_cases',
+    color='location',
+    title='Total COVID-19 Cases Over Time',
+    labels={'total_cases': 'Total Cases', 'date': 'Date'}
+)
+fig_cases.show()
+
+# Plot total vaccinations over time
+fig_vax = px.line(
+    df_filtered,
+    x='date',
+    y='total_vaccinations',
+    color='location',
+    title='Total COVID-19 Vaccinations Over Time',
+    labels={'total_vaccinations': 'Total Vaccinations', 'date': 'Date'}
+)
+fig_vax.show()
